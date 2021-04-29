@@ -38,7 +38,6 @@ export default function Input() {
                   setDel(true);
                 }}
               />
-              {console.log(<input type='text' name={`${weightKey}-${i}`} i={i} placeholder={weightKey}/>)}
             </div>
             <div>
               <input
