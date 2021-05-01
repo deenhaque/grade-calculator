@@ -29,10 +29,22 @@ export default function Grades() {
   const [gradeGoal, setGradeGoal] = useState(80);
 
   const averageGrade = ()=> {
+    let currGrades = 0;
+    let currWeights = 0;
+    grades.forEach(({weight, percent})=> {
+      if (weight && percent) {
+        currGrades += parseInt(weight)*parseInt(percent);
+        currWeights += parseInt(weight);
+      }
+    });
+    return currGrades / currWeights;
+  }
+
+  const currentGrade = ()=> {
     let avg = 0;
     grades.forEach(({weight, percent})=> {
       if (weight && percent) {
-        avg += weight*percent/100;
+        avg += parseInt(weight)*parseInt(percent)/100;
       }
     });
     return avg;
@@ -46,12 +58,13 @@ export default function Grades() {
     // Get avg grade and remaining weight
     grades.forEach(({weight, percent})=> {
       if (weight && percent) {
-        avg += weight*percent/100;
-        totalWeight += weight;
+        avg += parseInt(weight)*parseInt(percent)/100;
+        totalWeight += parseInt(weight);
       }
     });
     remainingWeight = 100-totalWeight;
 
+    // Remaining grade calculation
     return (gradeGoal - avg) / (remainingWeight/100);
   }
 
@@ -80,6 +93,16 @@ export default function Grades() {
           return (
               <Grade>
                 <StyledInput
+                  type='text' name={`${percentKey}-${i}`}
+                  value={grades[i].percent}
+                  i={i} placeholder={percentKey.charAt(0).toUpperCase()+percentKey.slice(1)}
+                  onInput={e=> {
+                    const newDel = e.target.value.length === 0;
+                    setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [percentKey]: e.target.value.replace(/\D/,'')} : grade));
+                    setDel(newDel);
+                  }}
+                /><label for={`${percentKey}-${i}`}>%</label>
+                <StyledInput
                   style={{width: '50px'}}
                   type='text' name={`${weightKey}-${i}`}
                   value={grades[i].weight}
@@ -90,21 +113,12 @@ export default function Grades() {
                     setDel(newDel);
                   }}
                 /><label for={`${weightKey}-${i}`}>%, </label>
-                <StyledInput
-                  type='text' name={`${percentKey}-${i}`}
-                  value={grades[i].percent}
-                  i={i} placeholder={percentKey.charAt(0).toUpperCase()+percentKey.slice(1)}
-                  onInput={e=> {
-                    const newDel = e.target.value.length === 0;
-                    setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [percentKey]: e.target.value.replace(/\D/,'')} : grade));
-                    setDel(newDel);
-                  }}
-                /><label for={`${percentKey}-${i}`}>%</label>
               </Grade>
           );
         })}
         <p>
-          Average Grade: {`${parseFloat(averageGrade()).toFixed(2)}%`}
+          Average Grade: {`${parseFloat(averageGrade()).toFixed(2)}%`}<br></br>
+          Current Grade: {`${parseFloat(currentGrade()).toFixed(2)}%`}
         </p>
 
         <div class='form-group'>
