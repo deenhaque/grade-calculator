@@ -4,16 +4,17 @@ import App from './App';
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+  @font-face {
+    font-family: 'Original Surfer';
+    src: url(https://fonts.gstatic.com/s/originalsurfer/v11/RWmQoKGZ9vIirYntXJ3_MbekzNMSC0Fu.woff2) format('woff2');
+    font-style: normal;
+    font-weight: 400;
+  }
 
   body {
     background-color: #0D1821;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Original Surfer';
   }
 
   p, h2, h3, h4, label {

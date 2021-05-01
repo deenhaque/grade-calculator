@@ -37,7 +37,7 @@ export default function Grades() {
         currWeights += parseInt(weight);
       }
     });
-    if (currWeights == 0) {
+    if (currWeights === 0) {
       return 0;
     }
     return currGrades / currWeights;
