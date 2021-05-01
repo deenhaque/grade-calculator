@@ -26,6 +26,8 @@ const StyledInput = styled.input`
 export default function Grades() {
   const [grades, setGrades] = useState([{weight: '', percent: ''}]);
   const [del, setDel] = useState(false);
+  const [gradeGoal, setGradeGoal] = useState(80);
+
   const averageGrade = ()=> {
     let avg = 0;
     grades.forEach(({weight, percent})=> {
@@ -34,6 +36,23 @@ export default function Grades() {
       }
     });
     return avg;
+  }
+
+  const calculateRemainingGrade = ()=> {
+    // Get current avg grade
+    let avg = 0;
+    let totalWeight = 0;
+    let remainingWeight = 100;
+    // Get avg grade and remaining weight
+    grades.forEach(({weight, percent})=> {
+      if (weight && percent) {
+        avg += weight*percent/100;
+        totalWeight += weight;
+      }
+    });
+    remainingWeight = 100-totalWeight;
+
+    return (gradeGoal - avg) / (remainingWeight/100);
   }
 
   useEffect(()=> {
@@ -64,29 +83,47 @@ export default function Grades() {
                   style={{width: '50px'}}
                   type='text' name={`${weightKey}-${i}`}
                   value={grades[i].weight}
-                  i={i} placeholder={weightKey}
+                  i={i} placeholder={weightKey.charAt(0).toUpperCase()+weightKey.slice(1)}
                   onInput={e=> {
                     const newDel = e.target.value.length === 0;
                     setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [weightKey]: e.target.value.replace(/\D/,'')} : grade));
                     setDel(newDel);
                   }}
-                />
+                /><label for={`${weightKey}-${i}`}>%, </label>
                 <StyledInput
                   type='text' name={`${percentKey}-${i}`}
                   value={grades[i].percent}
-                  i={i} placeholder={percentKey}
+                  i={i} placeholder={percentKey.charAt(0).toUpperCase()+percentKey.slice(1)}
                   onInput={e=> {
                     const newDel = e.target.value.length === 0;
                     setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [percentKey]: e.target.value.replace(/\D/,'')} : grade));
                     setDel(newDel);
                   }}
-                />
+                /><label for={`${percentKey}-${i}`}>%</label>
               </Grade>
           );
         })}
         <p>
-          {`${parseFloat(averageGrade()).toFixed(2)}%`}
+          Average Grade: {`${parseFloat(averageGrade()).toFixed(2)}%`}
         </p>
+
+        <div class='form-group'>
+            <label for="goalGrade">Grade Goal:</label>
+            <StyledInput
+              type='text' name='goalGrade'
+              value={gradeGoal}
+              placeholder='Grade Goal'
+              onInput={e=> {
+                setGradeGoal(e.target.value.replace(/\D/,''));
+              }}
+            />
+        </div>
+        <p>
+          Remaining Grade Needed: {`${parseFloat(calculateRemainingGrade()).toFixed(2)}%`}
+        </p>
+        
     </StyledGrades>
+    
+
   );
 }
