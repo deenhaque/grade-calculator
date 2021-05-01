@@ -24,7 +24,7 @@ const StyledInput = styled.input`
 `;
 
 export default function Grades() {
-  const [grades, setGrades] = useState([{weight: '', percent: ''}]);
+  const [grades, setGrades] = useState([{weight: '', percent: '', label: ''}]);
   const [del, setDel] = useState(false);
   const [gradeGoal, setGradeGoal] = useState(80);
 
@@ -79,8 +79,8 @@ export default function Grades() {
       setDel(false);
     }
     // If the last element is filled in, or if there is nothing in the list, add a new grade to grades
-    if (grades.length < 1 || grades[grades.length-1].weight || grades[grades.length-1].percent) {
-      setGrades(grades.concat([{weight: '', percent: ''}]));
+    if (grades.length < 1 || grades[grades.length-1].weight || grades[grades.length-1].percent || grades[grades.length-1].label) {
+      setGrades(grades.concat([{weight: '', percent: '', label: ''}]));
     }
     return null;
   }, [grades, del]);
@@ -89,9 +89,19 @@ export default function Grades() {
     <StyledGrades>
       <h1 style={{color: '#F0F4EF'}}>Grades</h1>
         {grades.map((grade, i)=> {
-          const [weightKey, percentKey] = Object.keys(grade);
+          const [weightKey, percentKey, labelKey] = Object.keys(grade);
           return (
               <Grade>
+                <StyledInput
+                  type='text' name={`${labelKey}-${i}`}
+                  value={grades[i].label}
+                  i={i} placeholder={labelKey.charAt(0).toUpperCase()+labelKey.slice(1)}
+                  onInput={e=> {
+                    const newDel = e.target.value.length === 0;
+                    setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [labelKey]: e.target.value} : grade));
+                    setDel(newDel);
+                  }}
+                /><label for={`${labelKey}-${i}`}>, </label>
                 <StyledInput
                   type='text' name={`${percentKey}-${i}`}
                   value={grades[i].percent}
@@ -101,7 +111,7 @@ export default function Grades() {
                     setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [percentKey]: e.target.value.replace(/\D/,'')} : grade));
                     setDel(newDel);
                   }}
-                /><label for={`${percentKey}-${i}`}>%</label>
+                /><label for={`${percentKey}-${i}`}>%, </label>
                 <StyledInput
                   style={{width: '50px'}}
                   type='text' name={`${weightKey}-${i}`}
@@ -112,7 +122,7 @@ export default function Grades() {
                     setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [weightKey]: e.target.value.replace(/\D/,'')} : grade));
                     setDel(newDel);
                   }}
-                /><label for={`${weightKey}-${i}`}>%, </label>
+                /><label for={`${weightKey}-${i}`}>%</label>
               </Grade>
           );
         })}
