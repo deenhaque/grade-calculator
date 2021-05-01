@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
-  p, h2, h3, h4 {
+  p, h2, h3, h4, label {
     color: #F0F4EF;
   }
 
