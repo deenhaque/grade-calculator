@@ -1,35 +1,28 @@
-import logo from './logo.svg';
 import styled from 'styled-components';
 
 function Header() {
-  const StyledHeader = styled.div`
-    background-color: #0D1821;
+  const StyledHeader = styled.header`
     color: white;
-    padding: 50px;
+    padding: 0px 50px 0px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   `;
-  const StyledFloatLeft = styled.span`
-    float: left;
-  `;
-  const StyledFloatRight = styled.span`
-    float: right;
+  const StyledCreatorText = styled.p`
+    padding: 0px;
+    margin: 0px;
   `;
   return (
     <StyledHeader>
-      <header className="Header-header">
-          <StyledFloatLeft>
-            <img src={logo} className="Header-logo" alt="logo" width="50" height="50"  />
-          </StyledFloatLeft>
-          <h1>
-            <StyledFloatLeft>
-              Grades Calculator
-            </StyledFloatLeft>
-          </h1>
-          <p>
-            <StyledFloatRight>
-              By Deen and Eric
-            </StyledFloatRight>
-          </p>
-      </header>
+      <h1>
+          Grade Calculator
+      </h1>
+      <div>
+
+      <StyledCreatorText>Created By:</StyledCreatorText>
+      <StyledCreatorText>Deen Haque</StyledCreatorText>
+      <StyledCreatorText>Eric Pham</StyledCreatorText>
+      </div>
     </StyledHeader>
   );
 }

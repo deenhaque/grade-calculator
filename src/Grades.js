@@ -1,17 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
+// Styles
+const Grade = styled.div`
+  display: inline-block;
+  margin: auto;
+  justify-content: left;
+`;
+const StyledGrades = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 50%;
+  background-color: #43AA8B;
+  border-radius: 20px;
+  padding-left: 20px;
+  align-content: center;
+`;
+const StyledInput = styled.input`
+  margin: 5px;
+  text-align: center;
+  width: 70px;
+`;
+
 export default function Grades() {
-  // Styles
-  const Grade = styled.div`
-  `;
-  const StyledGrades = styled.div`
-    margin: auto;
-    width: 50%;
-  `;
-  const StyledInput = styled.input`
-    margin: 5px;
-  `;
   const [grades, setGrades] = useState([{weight: '', percent: ''}]);
   const [del, setDel] = useState(false);
   const averageGrade = ()=> {
@@ -43,18 +55,20 @@ export default function Grades() {
 
   return (
     <StyledGrades>
-      <h1>Grades</h1>
+      <h1 style={{color: '#F0F4EF'}}>Grades</h1>
         {grades.map((grade, i)=> {
           const [weightKey, percentKey] = Object.keys(grade);
           return (
               <Grade>
                 <StyledInput
+                  style={{width: '50px'}}
                   type='text' name={`${weightKey}-${i}`}
                   value={grades[i].weight}
                   i={i} placeholder={weightKey}
                   onInput={e=> {
+                    const newDel = e.target.value.length === 0;
                     setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [weightKey]: e.target.value.replace(/\D/,'')} : grade));
-                    setDel(true);
+                    setDel(newDel);
                   }}
                 />
                 <StyledInput
@@ -62,8 +76,9 @@ export default function Grades() {
                   value={grades[i].percent}
                   i={i} placeholder={percentKey}
                   onInput={e=> {
+                    const newDel = e.target.value.length === 0;
                     setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [percentKey]: e.target.value.replace(/\D/,'')} : grade));
-                    setDel(true);
+                    setDel(newDel);
                   }}
                 />
               </Grade>
