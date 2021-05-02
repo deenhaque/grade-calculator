@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import ReactToolTip from "react-tooltip";
 import styled from 'styled-components';
 
 // Styles
 const Grade = styled.div`
   display: inline-block;
   margin: auto;
+  margin-bottom: 10px;
   justify-content: left;
 `;
 const StyledGrades = styled.div`
   display: flex;
   flex-direction: column;
   margin: auto;
-  width: 50%;
+  width: 45%;
   background-color: #43AA8B;
   border-radius: 20px;
   padding-left: 20px;
@@ -74,7 +76,7 @@ export default function Grades() {
   useEffect(()=> {
     // If the delete flag is on, see if we can remove empty grades and remove them. Set the delete flag to false.
     if (del) {
-      const newGrades = grades.filter(({weight, percent})=> weight || percent);
+      const newGrades = grades.filter(({label, weight, percent})=> label || weight || percent);
       
       if (JSON.stringify(newGrades) !== JSON.stringify(grades)) {
         setGrades(newGrades);
@@ -90,56 +92,111 @@ export default function Grades() {
 
   return (
     <StyledGrades>
-      <h1 style={{color: '#F0F4EF'}}>Grades</h1>
+      <ReactToolTip
+        id='yourGradeTip'
+        place='top'
+        effect='solid'
+        getContent={label=> `Enter the grade you got on ${label ? 'your ' + label : 'this'}`}
+      />
+      <ReactToolTip
+        id='weightTip'
+        place='top'
+        effect='solid'
+        getContent={label=> `Enter how much ${label ? 'your ' + label : 'this'} is worth`}
+      />
+      <ReactToolTip
+        id='labelTip'
+        place='top'
+        effect='solid'
+      >
+        Enter whatever this is called (optional)
+      </ReactToolTip>
+      <ReactToolTip
+        id='currentGradeTip'
+        place='top'
+        effect='solid'
+      >
+        If you did no more work for this course, you would walk out with the following grade
+      </ReactToolTip>
+      <ReactToolTip
+        id='averageGradeTip'
+        place='top'
+        effect='solid'
+      >
+        This is your average grade
+      </ReactToolTip>
+      <ReactToolTip
+        id='gradeGoalTip'
+        place='top'
+        effect='solid'
+      >
+        What grade are you looking for?
+      </ReactToolTip>
+      <h1 style={{textAlign: 'center', color: '#F0F4EF'}}>Enter Your Grades Below</h1>
         {grades.map((grade, i)=> {
           const [weightKey, percentKey, labelKey] = Object.keys(grade);
           return (
-              <Grade>
-                <StyledInput
-                  type='text' name={`${labelKey}-${i}`}
-                  value={grades[i].label}
-                  i={i} placeholder={labelKey.charAt(0).toUpperCase()+labelKey.slice(1)}
-                  onInput={e=> {
-                    const newDel = e.target.value.length === 0;
-                    setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [labelKey]: e.target.value} : grade));
-                    setDel(newDel);
-                  }}
-                /><label for={`${labelKey}-${i}`}>, </label>
-                <StyledInput
-                  type='text' name={`${percentKey}-${i}`}
-                  value={grades[i].percent}
-                  i={i} placeholder={percentKey.charAt(0).toUpperCase()+percentKey.slice(1)}
-                  onInput={e=> {
-                    const newDel = e.target.value.length === 0;
-                    setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [percentKey]: e.target.value.replace(/\D/,'')} : grade));
-                    setDel(newDel);
-                  }}
-                /><label for={`${percentKey}-${i}`}>%, </label>
-                <StyledInput
-                  style={{width: '50px'}}
-                  type='text' name={`${weightKey}-${i}`}
-                  value={grades[i].weight}
-                  i={i} placeholder={weightKey.charAt(0).toUpperCase()+weightKey.slice(1)}
-                  onInput={e=> {
-                    const newDel = e.target.value.length === 0;
-                    setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [weightKey]: e.target.value.replace(/\D/,'')} : grade));
-                    setDel(newDel);
-                  }}
-                /><label for={`${weightKey}-${i}`}>%</label>
-              </Grade>
+            <Grade>
+              <StyledInput
+                type='text' name={`${labelKey}-${i}`}
+                value={grades[i].label}
+                i={i} placeholder={labelKey.charAt(0).toUpperCase()+labelKey.slice(1)}
+                data-tip data-for='labelTip'
+                onInput={e=> {
+                  const newDel = e.target.value.length === 0;
+                  setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [labelKey]: e.target.value} : grade));
+                  setDel(newDel);
+                }}
+              /><label for={`${labelKey}-${i}`}>, </label>
+              <StyledInput
+                type='text' name={`${percentKey}-${i}`}
+                value={grades[i].percent}
+                i={i} placeholder='Your Grade'
+                data-tip={grades[i].label} data-for='yourGradeTip'
+                onInput={e=> {
+                  const newDel = e.target.value.length === 0;
+                  setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [percentKey]: e.target.value.replace(/\D/,'')} : grade));
+                  setDel(newDel);
+                }}
+              /><label for={`${percentKey}-${i}`}>% </label>
+              <StyledInput
+                style={{width: '50px'}}
+                type='text' name={`${weightKey}-${i}`}
+                value={grades[i].weight}
+                i={i} placeholder={weightKey.charAt(0).toUpperCase()+weightKey.slice(1)}
+                data-tip={grades[i].label} data-for='weightTip'
+                onInput={e=> {
+                  const newDel = e.target.value.length === 0;
+                  setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [weightKey]: e.target.value.replace(/\D/,'')} : grade));
+                  setDel(newDel);
+                }}
+              /><label for={`${weightKey}-${i}`}>%</label>
+            </Grade>
           );
         })}
-        <p>
-          Average Grade: {`${parseFloat(averageGrade()).toFixed(2)}%`}<br></br>
-          Current Grade: {`${parseFloat(currentGrade()).toFixed(2)}%`}
-        </p>
-
-        <div class='form-group'>
-            <label for="goalGrade">Grade Goal:</label>
+          <p style={{margin: '0px', maxWidth: '176px'}}
+            data-tip data-for='averageGradeTip'
+          >
+            Average Grade: {`${parseFloat(averageGrade()).toFixed(2)}%`}
+          </p>
+          <p style={{margin: '0px', maxWidth: '170px'}}
+            data-tip data-for='currentGradeTip'
+          > 
+            Current Grade: {`${parseFloat(currentGrade()).toFixed(2)}%`}
+          </p>
+        <div
+          data-tip
+          data-for='gradeGoalTip'
+          style={{maxWidth: '176px'}}
+        >
+            <label
+              for="goalGrade"
+            >Grade Goal:</label>
             <StyledInput
               type='text' name='goalGrade'
               value={gradeGoal}
               placeholder='Grade Goal'
+              
               onInput={e=> {
                 setGradeGoal(e.target.value.replace(/\D/,''));
               }}
