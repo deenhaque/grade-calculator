@@ -12,6 +12,11 @@ function Header() {
     padding: 0px;
     margin: 0px;
   `;
+  const StyledCreatorLink = styled.a`
+    padding: 0px;
+    margin: 0px;
+    color: white;
+  `;
   return (
     <StyledHeader>
       <h1>
@@ -21,7 +26,7 @@ function Header() {
 
       <StyledCreatorText>Created By:</StyledCreatorText>
       <StyledCreatorText>Deen Haque</StyledCreatorText>
-      <StyledCreatorText>Eric Pham</StyledCreatorText>
+      <StyledCreatorLink href="https://ericphamep.github.io/">Eric Pham</StyledCreatorLink>
       </div>
     </StyledHeader>
   );

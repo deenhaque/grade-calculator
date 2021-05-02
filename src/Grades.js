@@ -53,11 +53,12 @@ export default function Grades() {
     return avg;
   }
 
-  const calculateRemainingGrade = ()=> {
+  const calculateRemainingGradeStr = ()=> {
     // Get current avg grade
     let avg = 0;
     let totalWeight = 0;
     let remainingWeight = 100;
+    let remainingGrade = 0;
     // Get avg grade and remaining weight
     grades.forEach(({weight, percent})=> {
       if (weight && percent) {
@@ -68,7 +69,8 @@ export default function Grades() {
     remainingWeight = 100-totalWeight;
 
     // Remaining grade calculation
-    return (gradeGoal - avg) / (remainingWeight/100);
+    remainingGrade = (gradeGoal - avg) / (remainingWeight/100);
+    return `${parseFloat(remainingGrade).toFixed(2)}% of weight ${remainingWeight}%`;
   }
 
   useEffect(()=> {
@@ -146,7 +148,7 @@ export default function Grades() {
             />
         </div>
         <p>
-          Remaining Grade Needed: {`${parseFloat(calculateRemainingGrade()).toFixed(2)}%`}
+          Remaining Grade Needed: {calculateRemainingGradeStr()}
         </p>
         
     </StyledGrades>
