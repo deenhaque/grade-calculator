@@ -111,14 +111,14 @@ export default function Grades() {
         place='top'
         effect='solid'
       >
-        Enter whatever this is called (optional)
+        Enter whatever this is called (e.g. Midterm, Tests, Tutorials, Bonus, etc)
       </ReactToolTip>
       <ReactToolTip
         id='currentGradeTip'
         place='top'
         effect='solid'
       >
-        If you did no more work for this course, you would walk out with the following grade
+        If you did no more work for this course, you would walk out with this grade
       </ReactToolTip>
       <ReactToolTip
         id='averageGradeTip'
@@ -142,14 +142,15 @@ export default function Grades() {
               <StyledInput
                 type='text' name={`${labelKey}-${i}`}
                 value={grades[i].label}
-                i={i} placeholder={labelKey.charAt(0).toUpperCase()+labelKey.slice(1)}
+                i={i} placeholder='Assessment'
                 data-tip data-for='labelTip'
                 onInput={e=> {
                   const newDel = e.target.value.length === 0;
                   setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [labelKey]: e.target.value} : grade));
                   setDel(newDel);
                 }}
-              /><label for={`${labelKey}-${i}`}>, </label>
+              />
+              <label for={`${labelKey}-${i}`}>, </label>
               <StyledInput
                 type='text' name={`${percentKey}-${i}`}
                 value={grades[i].percent}
@@ -160,7 +161,8 @@ export default function Grades() {
                   setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [percentKey]: e.target.value.replace(/\D/,'')} : grade));
                   setDel(newDel);
                 }}
-              /><label for={`${percentKey}-${i}`}>% </label>
+              />
+              <label for={`${percentKey}-${i}`}>% </label>
               <StyledInput
                 style={{width: '50px'}}
                 type='text' name={`${weightKey}-${i}`}
@@ -172,7 +174,8 @@ export default function Grades() {
                   setGrades(Array.from(grades, (grade, index)=> index===i ? {...grade, [weightKey]: e.target.value.replace(/\D/,'')} : grade));
                   setDel(newDel);
                 }}
-              /><label for={`${weightKey}-${i}`}>%</label>
+              />
+              <label for={`${weightKey}-${i}`}>%</label>
             </Grade>
           );
         })}
@@ -189,7 +192,7 @@ export default function Grades() {
         <div
           data-tip
           data-for='gradeGoalTip'
-          style={{maxWidth: '176px'}}
+          style={{maxWidth: '180px'}}
         >
             <label
               for="goalGrade"

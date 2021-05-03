@@ -23,10 +23,9 @@ function Header() {
           Grade Calculator
       </h1>
       <div>
-
-      <StyledCreatorText>Created By:</StyledCreatorText>
-      <StyledCreatorText>Deen Haque</StyledCreatorText>
-      <StyledCreatorLink href="https://ericphamep.github.io/">Eric Pham</StyledCreatorLink>
+        <StyledCreatorText>Created By:</StyledCreatorText>
+        <StyledCreatorLink target='_blank' href='https://linkedin.com/in/deenhaque/'>Deen Haque</StyledCreatorLink> <br />
+        <StyledCreatorLink target='_blank' href="https://ericphamep.github.io/">Eric Pham</StyledCreatorLink>
       </div>
     </StyledHeader>
   );
