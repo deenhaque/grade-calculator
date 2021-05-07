@@ -69,6 +69,9 @@ export default function Grades() {
       }
     });
     remainingWeight = 100-totalWeight;
+    if (totalWeight >= 100) {
+      return `No remaing grade available. Current weight of grades is ${totalWeight}%.`;
+    }
 
     // Remaining grade calculation
     remainingGrade = (gradeGoal - avg) / (remainingWeight/100);
